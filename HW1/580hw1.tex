@@ -1,0 +1,112 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{url}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[margin=0.70in]{geometry}
+\setlength{\parindent}{0in}
+
+\title{Stat580 - Homework 1}
+\author{Alex Shum}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+$X_1, X_2, \dots, X_n \sim Unif(0,1)$.  \\
+$(\Sigma_{i=1}^n X_i) mod 1 = \Sigma_{i=1}^n X_i - \lfloor \Sigma_{i=1}^n \rfloor \sim Unif(0,1)$. \\
+\\
+Proof: 
+
+\section*{Problem 2}
+Let $F$ be a cumulative distribution function and let $F^{-1} = min\{x | F(x) \ge u\}$.  If $U \sim Unif(0,1)$ then $F^{-1}(U) \sim F$.  We start with the cumulative distribution function for $F^{-1}(U)$: $P(F^{-1}(U) \le x)$
+\begin{align*}
+\text{Applying F to both sides (F is monotonic): }& P(F^{-1}(U) \le x) = P(U \le F(x))\\
+\text{But since U is uniform: }& P(U \le F(x)) = F(x)
+\end{align*}
+
+\section*{Problem 3}
+\subsection*{Part a}
+We know that $U_1, U_2 \sim Unif(0,1)$ and $X = \sqrt{-2log(U_1)}cos(2\pi U_2)$ and $Y = \sqrt{-2log(U_1)}sin(2\pi U_1)$.  We will transform $U_1$ and $U_2$ using the above functions and show that it yields a normal.\\
+\begin{align*}
+X = \sqrt{-2log(U_1)}cos(2\pi U_2) &\text{ and } Y = \sqrt{-2log(U_1)}sin(2\pi U_1) \\
+X^2 + Y^2 = -2log(U_1) &\longrightarrow U_1 = exp\{\frac{-1}{2} (X^2 + Y^2) \} \\
+\frac{Y}{X} = tan(2\pi U_2) &\longrightarrow U_2 = \frac{1}{2\pi} tan^{-1}(\frac{Y}{X}) \\
+|J| = |det \begin{bmatrix}\frac{\partial U_1}{\partial X} & \frac{\partial U_1}{\partial Y} \\ 
+                          \frac{\partial U_2}{\partial X} & \frac{\partial U_2}{\partial Y} \end{bmatrix}|
+   &= |\begin{bmatrix} exp\{ \frac{-1}{2}(X^2 + Y^2) \} (-X) & exp\{ \frac{-1}{2}(X^2 + Y^2) \} (-Y) \\ 
+                       \frac{1}{2\pi} \frac{X^2}{X^2 + Y^2} \frac{-Y}{X^2} & 
+                       \frac{1}{2\pi} \frac{X^2}{X^2 + Y^2} \frac{1}{X}\end{bmatrix}| \\
+                      &= \frac{1}{2\pi} \frac{X^2}{X^2 + Y^2} exp\{-\frac{X^2 + Y^2}{2} \} (1 + \frac{Y^2}{X^2}) \\
+   &= \frac{1}{2\pi} exp\{-\frac{X^2 + Y^2}{2} \} \\
+   &= \frac{1}{\sqrt{2\pi}}exp\{-X^2 /2 \} \frac{1}{\sqrt{2\pi}}exp\{-Y^2 / 2 \} 
+\end{align*}
+Thus we have that $f_{X,Y}(x,y) = \frac{1}{\sqrt{2\pi}}exp\{-x^2 /2 \} \frac{1}{\sqrt{2\pi}}exp\{-y^2 / 2 \}$ thus we have two independent standard normal variables.
+
+\subsection*{Part b}
+
+\section*{Problem 4}
+\section*{Problem 5}
+\subsection*{Part a}
+\subsection*{Part b}
+
+\section*{Problem 6}
+\subsection*{Part a}
+\subsection*{Part b}
+\subsection*{Part c}
+
+\section*{Problem 7}
+\subsection*{Part a}
+Code available on impact2.stat.iastate.edu under /class/stat580/ashum/homework1/temp.c
+\subsection*{Part b}
+Code available on impact2.stat.iastate.edu under /class/stat580/ashum/homework1/mult.c
+
+\end{document}
