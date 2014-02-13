@@ -44,7 +44,7 @@ Thus we have that $f_{X,Y}(x,y) = \frac{1}{\sqrt{2\pi}}exp\{-x^2 /2 \} \frac{1}{
 \subsection*{Part b}
 
 \section*{Problem 4}
-<<sim, echo=FALSE, cache=TRUE>>=
+<<sim, echo=FALSE, cache=TRUE, results='none'>>=
 library(ggplot2)
 d = 1:20
 tail = function(d) {
@@ -56,25 +56,66 @@ tail = function(d) {
 
 naive = function(d) {
   R = rnorm(100000,0,1)
-  sum(R < d)/100000
+  sum(R <= d)/100000
 }
 
-sapply(d, tail)
-sapply(d, naive)
+a = sapply(d, tail)
+b = sapply(d, naive)
 @
-
-
+We sampled from a standard normal tail as follows: we generated 1,000,000 iid samples from $U_1 \sim Unif(0,1)$ and 1,000,000 iid samples from $U_2 \sim Unif(0,1)$.  Then we accept if $U_2 \sqrt{d^2 - 2log(U_1)} \le d$.  We tried $d$ from 1 to 20.  We repeated this experiment by generating 1,000,000 iid samples from $X \sim N(0,1)$ and we accepted if $X \le d$.  \\
+\\
+We found that when we sample directly from standard normal we accept 100$\%$ of the time when $d > 4$.  When we sampled using the uniforms as described above we found that as $d$ increases the acceptance probability increases but even with $d = 20$ we did not have a 100$\%$ acceptance rate.  With 1,000,000 samples we still rejected about 2200 times.
 
 \section*{Problem 5}
 \subsection*{Part a}
+The following is a basic outline of our algorithm.  $(A,R,C)$ are the same triples as described in the prompt.  Note that we index the matrix and the vector starting from $index = 0$.  If we want $y_j$, the $j$th element of $y = Wx$.  We must find the $j$th row of our matrix $W$ and multiply with the correct element in vector $x$:
+\begin{enumerate}
+\item Iterate through the columns (elements in $C$).
+\item For each column $i$, find the rows of non-zero elements.
+\item If the element in row $j$ is non-zero we multiply it with the $i$th element in $x$.
+\end{enumerate}
+We include the following pseudo code:
+\begin{verbatim}
+sum = 0;
+r = correct row;
+for(int i = 0; i < c.length - 1; i++) {
+  for(int j = C[i]; j < C[i + 1]; j++) {
+    if(R[j] == r) sum = sum + x[i]*A[j];
+  }
+}
+return(sum)
+\end{verbatim}
+
 \subsection*{Part b}
+Our strategy is similar to our method in part $a$.  However, with a symmetric matrix we will only store the lower-triangular part of the matrix.  $A$ stores the elements in column-wise order; but only the elements in the diagonal and lower-triangular part of the matrix.  $R$ stores the corresponding row of the elements in $A$.  And elements in $C$ indicate the element in $A$ that starts the columns of the lower triangular part of our matrix.\\
+\\
+We follow the same outline as above, the key difference is that when we check an element we also check it's reflection: when we check if element (i,j), we will also check element (j,i).  We include the following pseudo code:
+\begin{verbatim}
+sum = 0;
+r = correct row;
+for(int i = 0; i < c.length - 1; i++) {
+  col = i;
+  for(int j = c[i]; j < c[i + 1]; j++) {
+    row = R[j];
+    if(row == r) sum = sum + y[i]*A[j];
+    if(col != row && col == r) sum = sum + y[row]*A[j];
+  }
+}
+\end{verbatim}
+
 
 \section*{Problem 6}
 \subsection*{Part a}
+
+
 \subsection*{Part b}
+
+
 \subsection*{Part c}
 
+
 \section*{Problem 7}
+See readme.txt file in /class/stat580/ashum/homework1/
 \subsection*{Part a}
 Code available on impact2.stat.iastate.edu under /class/stat580/ashum/homework1/temp.c
 \subsection*{Part b}
