@@ -109,10 +109,28 @@ for(int i = 0; i < c.length - 1; i++) {
 
 
 \subsection*{Part b}
-
+Since there are no changes to population 2 and 4, the only changes to the WSS are in the $\hat{\mu}_1$ and $\hat{\mu}_3$ terms.  We calculate the change in WSS below when we move $W_{n_W}$ from population 1 to population 3.  First we calculate the difference in WSS for population 1:
+\begin{align*}
+t
+\end{align*}
 
 \subsection*{Part c}
-
+Since there are no changes to population 1 and 2, the only changes to the WSS is in $\Sigma_{i=1}^{n_Y}||Y_i - \hat{\mu}_3||^2$ and $\Sigma_{i=1}^{n_Z}||Z_i - \hat{\mu}_4||^2$.  We calculate the change in WSS below when we move $Y_{n_Y}$ from population 3 to population 4.  First we calculate the difference in WSS for population 4:
+\begin{align*}
+\text{Denote: } \bar{Z} = \frac{\Sigma_{i=1}^{n_Z}Z_i}{n_Z} \text{ and } \bar{Z}^* = \frac{n\bar{Z} + Y_{nY}}{n_Z + 1} \\ 
+\Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2 - \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2\\
+= \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2 + n_{Z}||\bar{Z} - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2 - \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2\\
+= n_{Z}||\bar{Z} - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2\\
+= \frac{n_Z}{(n_Z + 1)^2}||\bar{Z} - Y_{n_Y}||^2 + (\frac{n_Z}{n_Z + 1})^2 ||Y_{n_Y} - \bar{Z}||^2
+\end{align*}
+The difference in WSS for population 3:
+\begin{align*}
+\text{Denote: } \bar{Y} = \frac{\Sigma_{i=1}^{n_Y}Y_i}{n_Y} \text{ and }\bar{Y}^* = \frac{n_Y \bar{Y} - Y_{n_Y}}{n_Y - 1}\\
+\Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2 \\
+= \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2 + n_Y||\bar{Y} - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
+= n_Y||\bar{Y} - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 \\
+= \frac{n_Y}{(n_Y - 1)^2}||Y_{n_Y} - \bar{Y}||^2 - (\frac{n_Y}{n_Y - 1})^2 ||Y_{n_Y} - \bar{Y}||^2
+\end{align*}
 
 \section*{Problem 7}
 See readme.txt file in /class/stat580/ashum/homework1/
