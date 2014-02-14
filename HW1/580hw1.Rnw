@@ -14,7 +14,7 @@
 $X_1, X_2, \dots, X_n \sim Unif(0,1)$.  \\
 $(\Sigma_{i=1}^n X_i) mod 1 = \Sigma_{i=1}^n X_i - \lfloor \Sigma_{i=1}^n \rfloor \sim Unif(0,1)$. \\
 \\
-Proof: 
+Proof: By induction: clearly for $n=1$ we have that $(\Sigma_{i=1}^n X_i) mod 1 \sim Unif(0,1)$.  Suppose for some $n \ge 1$ we have that $(\Sigma_{i=1}^n X_i) mod 1 \sim Unif(0,1)$.  For $n + 1$ we have that $(\Sigma_{i=1}^{n+1}X_i)mod1 = (\Sigma_{i=1}^n X_i + X_{n+1}) mod 1$.  Both of $\Sigma_{i=1}^n X_i$ and $X_{n+1}$ are uniform(0,1) and the sum of two uniform(0,1) distributions is the triangular distribution: $f(x) = I(0\le x \le 1)x + I(1 \le x \le 2)(2-x)$.  The modulus applies to $I(1 \le x \le 2)$ and it results in a uniform distribution.
 
 \section*{Problem 2}
 Let $F$ be a cumulative distribution function and let $F^{-1} = min\{x | F(x) \ge u\}$.  If $U \sim Unif(0,1)$ then $F^{-1}(U) \sim F$.  We start with the cumulative distribution function for $F^{-1}(U)$: $P(F^{-1}(U) \le x)$
@@ -42,6 +42,7 @@ X^2 + Y^2 = -2log(U_1) &\longrightarrow U_1 = exp\{\frac{-1}{2} (X^2 + Y^2) \} \
 Thus we have that $f_{X,Y}(x,y) = \frac{1}{\sqrt{2\pi}}exp\{-x^2 /2 \} \frac{1}{\sqrt{2\pi}}exp\{-y^2 / 2 \}$ thus we have two independent standard normal variables.
 
 \subsection*{Part b}
+Since we only accept when $V_1^2 + V_2^2 < 1$ with $V_1^2$ and $V_2^2$ uniform(-1,1) then our acceptance probability is $\pi/4$.  The acceptance region is a radius 1 circle inside a 2 x 2 box.  Since we reject if $V_1^2 + V_2^2 > 1$ then this means that $W = V_1^2 + V_2^2$ is uniform(0,1) and the angle of any point generated in the circle is $uniform(0, 2\pi)$.  Generating a point inside the circle, using trigonometry we can relate the angle from the origin and the coordinates of the points by $sin(\theta) = \frac{V_2}{sqrt{W}}$ and $cos(\theta) = \frac{V_1}{sqrt{W}}$.  Thus from the Box-Muller algorithm we can see that $X = \sqrt{-2log(W)}\frac{V_1}{sqrt{W}}$ and $Y = \sqrt{-2log(W)}\frac{V_2}{sqrt{W}}$ must both be normal(0,1).
 
 \section*{Problem 4}
 <<sim, echo=FALSE, cache=TRUE, results='none'>>=
@@ -106,12 +107,47 @@ for(int i = 0; i < c.length - 1; i++) {
 
 \section*{Problem 6}
 \subsection*{Part a}
-
+Since there are no changes to population 3 and 4, the only changes to the WSS are in the $\hat{\mu}_1$ and $\hat{\mu}_2$ terms.  We calculate the change in WSS below when we move $W_{n_W}$ from population 1 to population 2.  First we calculate the difference in WSS for population 1:
+\begin{align*}
+\text{Denote: } \hat{\mu_1} = \frac{n_U \bar{U} + n_W \bar{W}}{n_U + n_W} \text{ and } \hat{\mu_2} = \frac{n_V \bar{V} + n_X \bar{X}}{n_V + n_X}\\
+\text{Denote: } \hat{\mu_1}^* = \frac{n_U \bar{U} + n_W \bar{W} - W_{n_W}}{n_U + n_W - 1}  \text{ and } \hat{\mu_2}^* = \frac{n_V \bar{V} + n_X \bar{X} + W_{n_W}}{n_V + n_X + 1}\\
+\Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}^*||^2 + \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}^*||^2 - ||W_{n_W} - \hat{\mu_1}^*||^2 - \Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 - \Sigma_{i=1}^{n_W}||W_i - \hat{\mu}||^2\\
+=\Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 + n_U||\hat{\mu_1} - \hat{\mu_1}^*||^2 + \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}||^2 + n_W||\hat{\mu_1} - \hat{\mu_1}^*||^2 - \\
+||W_{n_W} - \hat{\mu_1}^*||^2 - \Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 - \Sigma_{i=1}^{n_W}||W_i - \hat{\mu}||^2\\
+=n_U||\hat{\mu_1} - \hat{\mu_1}^*||^2 + n_W||\hat{\mu_1} - \hat{\mu_1}^*||^2 - ||W_{n_W} - \hat{\mu_1}^*||^2\\
+= n_U||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{(n_U + n_W)(n_U + n_W - 1)}||^2 + n_W||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{(n_U + n_W)(n_U + n_W - 1)}||^2 - \\
+||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{(n_U + n_W - 1)}||^2 \\
+= (\frac{1}{n_U + n_W} - 1)||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{n_U + n_W - 1}||^2
+\end{align*}
+The difference in WSS for population 2:
+\begin{align*}
+\text{Denote: } \hat{\mu_2} = \frac{n_V \bar{V} + n_X \bar{X}}{n_V + n_X} \text{ and } \hat{\mu_2}^* = \frac{n_V \bar{V} + n_X \bar{X} + W_{n_W}}{n_V + n_X + 1} \\
+\Sigma_{i=1}^{n_V}||V_i - \hat{\mu_2}^*||^2 + \Sigma_{i=1}^{n_X}||X_i - \hat{\mu_2}^*||^2 + ||W_{n_W} - \hat{\mu_2}^*||^2 - \Sigma_{i=1}^{n_V}||V_i - \hat{\mu_2}||^2 - \Sigma_{i=1}^{n_X}||X_i - \hat{\mu_2}||^2 \\
+= \Sigma_{i=1}^{n_V}||V_i - \hat{\mu_2}||^2 + n_V||\hat{\mu_2} - \hat{\mu_2}^*||^2 + \Sigma_{i=1}^{n_X}||X_i - \hat{\mu_2}||^2 +  n_X||\hat{\mu_2} - \hat{\mu}^*||^2 +  \\
+||W_{n_W} - \hat{\mu_2}^*||^2 - \Sigma_{i=1}^{n_V}||V_i - \hat{\mu_2}||^2 - \Sigma_{i=1}^{n_X}||X_i - \hat{\mu_2}||^2\\
+=  n_V||\hat{\mu_2} - \hat{\mu_2}^*||^2 + n_X||\hat{\mu_2} - \hat{\mu}^*||^2 + ||W_{n_W} - \hat{\mu_2}^*||^2\\
+= \frac{1}{n_V + n_X}||\frac{n_V(\bar{V} - W_{n_W}) + n_X(\bar{X} - W_{n_W})}{n_V + n_X + 1}||^2 + ||\frac{n_V(\bar{V} - W_{n_W}) + n_X(\bar{X} - W_{n_W})}{n_V + n_X + 1}||^2\\
+= (\frac{1}{n_V + n_X} + 1)||\frac{n_V(\bar{V} - W_{n_W}) + n_X(\bar{X} - W_{n_W})}{n_V + n_X + 1}||^2
+\end{align*}
 
 \subsection*{Part b}
 Since there are no changes to population 2 and 4, the only changes to the WSS are in the $\hat{\mu}_1$ and $\hat{\mu}_3$ terms.  We calculate the change in WSS below when we move $W_{n_W}$ from population 1 to population 3.  First we calculate the difference in WSS for population 1:
 \begin{align*}
-t
+\text{Denote: } \hat{\mu_1} = \frac{n_U\bar{U} + n_W\bar{W}}{n_U + n_W} \text{ and } \hat{\mu_1}^* = \frac{n_U\bar{U} + n_W\bar{W} - W_{n_W}}{n_U + n_W - 1}\\
+\Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}^*||^2 + \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}^*||^2 - ||W_{n_W} - \hat{\mu_1}^*||^2 - \Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 - \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}||^2\\
+= \Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 + n_U||\hat{\mu_1} - \hat{\mu_1}^*||^2 + \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}||^2 + n_W||\hat{\mu_1} - \hat{\mu_1}^*||^2 - ||W_{n_W} - \hat{\mu_1}^*||^2 - \\
+\Sigma_{i=1}^{n_U}||U_i - \hat{\mu_1}||^2 - \Sigma_{i=1}^{n_W}||W_i - \hat{\mu_1}||^2\\
+= (n_U + n_W)||\hat{\mu_1} - \hat{\mu_1}^*||^2 - ||W_{n_W} - \hat{\mu_1}^*||^2 \\
+= \frac{1}{n_U + n_W}||\frac{n_W(W_{n_W} - \bar{W}) + n_U(W_{n_W} - \bar{U})}{n_U + n_W - 1}||^2 - ||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{n_U + n_W - 1}||^2\\
+= (\frac{1}{n_U + n_W} - 1)||\frac{n_U(W_{n_W} - \bar{U}) + n_W(W_{n_W} - \bar{W})}{n_U + n_W - 1}||^2
+\end{align*}
+The difference in WSS for population 3:
+\begin{align*}
+\text{Denote: } \bar{Y} = \frac{\Sigma_{i=1}^{n_Y}}{n_Y} \text{ and } \bar{Y}^* = \frac{n_Y\bar{Y} + W_{n_W}}{n_Y + 1}\\
+\Sigma_{i=1}^{n_Y}||Y_i = \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
+\Sigma_{i=1}^{n_Y}||Y_i = \bar{Y}||^2 + n_Y||\bar{Y} - \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
+\frac{n_Y}{(n_Y + 1)^2}||\bar{Y} - W_{n_W}||^2 + (\frac{n_Y}{n_Y + 1})^2||W_{n_W} - \bar{Y}||^2\\
+\frac{n_Y}{n_Y + 1}||\bar{Y} - W_{n_W}||^2
 \end{align*}
 
 \subsection*{Part c}
@@ -121,7 +157,8 @@ Since there are no changes to population 1 and 2, the only changes to the WSS is
 \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2 - \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2\\
 = \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2 + n_{Z}||\bar{Z} - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2 - \Sigma_{i=1}^{n_Z}||Z_i - \bar{Z}||^2\\
 = n_{Z}||\bar{Z} - \bar{Z}^*||^2 + ||Y_{n_Y} - \bar{Z}^*||^2\\
-= \frac{n_Z}{(n_Z + 1)^2}||\bar{Z} - Y_{n_Y}||^2 + (\frac{n_Z}{n_Z + 1})^2 ||Y_{n_Y} - \bar{Z}||^2
+= \frac{n_Z}{(n_Z + 1)^2}||\bar{Z} - Y_{n_Y}||^2 + (\frac{n_Z}{n_Z + 1})^2 ||Y_{n_Y} - \bar{Z}||^2\\
+= \frac{n_Z}{n_Z + 1}||\bar{Z} - Y_{n_Y}||^2
 \end{align*}
 The difference in WSS for population 3:
 \begin{align*}
@@ -129,7 +166,8 @@ The difference in WSS for population 3:
 \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2 \\
 = \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2 + n_Y||\bar{Y} - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
 = n_Y||\bar{Y} - \bar{Y}^*||^2 - ||Y_{n_Y} - \bar{Y}^*||^2 \\
-= \frac{n_Y}{(n_Y - 1)^2}||Y_{n_Y} - \bar{Y}||^2 - (\frac{n_Y}{n_Y - 1})^2 ||Y_{n_Y} - \bar{Y}||^2
+= \frac{n_Y}{(n_Y - 1)^2}||Y_{n_Y} - \bar{Y}||^2 - (\frac{n_Y}{n_Y - 1})^2 ||Y_{n_Y} - \bar{Y}||^2 \\
+= \frac{n_Y}{n_Y - 1}||Y_{n_Y} - \bar{Y}||^2
 \end{align*}
 
 \section*{Problem 7}
