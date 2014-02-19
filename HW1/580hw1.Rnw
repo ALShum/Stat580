@@ -144,10 +144,10 @@ Since there are no changes to population 2 and 4, the only changes to the WSS ar
 The difference in WSS for population 3:
 \begin{align*}
 \text{Denote: } \bar{Y} = \frac{\Sigma_{i=1}^{n_Y}}{n_Y} \text{ and } \bar{Y}^* = \frac{n_Y\bar{Y} + W_{n_W}}{n_Y + 1}\\
-\Sigma_{i=1}^{n_Y}||Y_i = \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
-\Sigma_{i=1}^{n_Y}||Y_i = \bar{Y}||^2 + n_Y||\bar{Y} - \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
-\frac{n_Y}{(n_Y + 1)^2}||\bar{Y} - W_{n_W}||^2 + (\frac{n_Y}{n_Y + 1})^2||W_{n_W} - \bar{Y}||^2\\
-\frac{n_Y}{n_Y + 1}||\bar{Y} - W_{n_W}||^2
+\Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
+=\Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2 + n_Y||\bar{Y} - \bar{Y}^*||^2 + ||W_{n_W} - \bar{Y}^*||^2 - \Sigma_{i=1}^{n_Y}||Y_i - \bar{Y}||^2\\
+=\frac{n_Y}{(n_Y + 1)^2}||\bar{Y} - W_{n_W}||^2 + (\frac{n_Y}{n_Y + 1})^2||W_{n_W} - \bar{Y}||^2\\
+=\frac{n_Y}{n_Y + 1}||\bar{Y} - W_{n_W}||^2
 \end{align*}
 
 \subsection*{Part c}
